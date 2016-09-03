@@ -1,3 +1,9 @@
+# Temporary files and directories
+Debug
+build
+.cproject
+.project
+
 # Compiled Object files
 *.slo
 *.lo
