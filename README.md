@@ -1,4 +1,6 @@
 # Marco
 Mobile robot based on RaspberryPi
 
-Copyright 2016 Igor Molcean, Raul Sulaimanov
+Check the wiki for details https://github.com/imolcean/Marco/wiki
+
+__Copyright 2016 Igor Molcean, Raul Sulaimanov__
