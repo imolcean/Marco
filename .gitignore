@@ -1,6 +1,8 @@
 # Temporary files and directories
 Debug
 build
+bin
+lib
 .cproject
 .project
 
