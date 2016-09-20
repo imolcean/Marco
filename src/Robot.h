@@ -8,7 +8,6 @@
 #ifndef ROBOT_H_
 #define ROBOT_H_
 
-#include "Config.h"
 #include "Track.h"
 
 namespace marco
@@ -17,15 +16,13 @@ namespace marco
 class Robot
 {
 private:
-	Config& m_config;
 	Track& m_leftTrack;
 	Track& m_rightTrack;
 
 public:
-	Robot(Config& config, Track& leftTrack, Track& rightTrack);
+	Robot(Track& leftTrack, Track& rightTrack);
 	Track& getLeftTrack();
 	Track& getRightTrack();
-	Config& getConfig();
 };
 
 } /* namespace marco */

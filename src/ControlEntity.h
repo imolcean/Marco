@@ -58,6 +58,26 @@ public:
 	 * Returns the remaining execution time.
 	 */
 	int getTime() const;
+
+	/**
+	 * Sets X value of the vector.
+	 */
+	void setX(double val);
+
+	/**
+	 * Sets Y value of the vector.
+	 */
+	void setY(double val);
+
+	/**
+	 * Sets the remaining execution time.
+	 */
+	void setTime(int val);
+
+	/**
+	 * Updates control entity by setting the new values.
+	 */
+	void update(double x, double y, int time);
 };
 
 } /* namespace marco */

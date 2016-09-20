@@ -4,8 +4,11 @@ PROJECT(Marco)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall")
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+SET(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../lib)
+
+INCLUDE_DIRECTORIES(${ROOT}/src)
 
 
 # The version number
@@ -37,7 +40,9 @@ ADD_EXECUTABLE(test_io ${TESTIO_SRC})
 SET(LIBMARCO_SRC
 	src/Config.cpp
 	src/Robot.cpp
-	src/Track.cpp)
+	src/Track.cpp
+	src/ControlEntity.cpp
+	src/InputHandler.cpp)
 ADD_LIBRARY(libmarco STATIC ${LIBMARCO_SRC})
 TARGET_LINK_LIBRARIES(libmarco ${CONFIG++_LIBRARIES})
 

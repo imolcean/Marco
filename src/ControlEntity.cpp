@@ -47,4 +47,26 @@ int ControlEntity::getTime() const
 	return m_time;
 }
 
+void ControlEntity::setX(double val)
+{
+	m_x = val;
+}
+
+void ControlEntity::setY(double val)
+{
+	m_y = val;
+}
+
+void ControlEntity::setTime(int val)
+{
+	m_time = val;
+}
+
+void ControlEntity::update(double x, double y, int time)
+{
+	m_x = x;
+	m_y = y;
+	m_time = time;
+}
+
 } /* namespace marco */

@@ -18,6 +18,7 @@ void InputHandler::run()
 	{
 		m_running = true;
 		std::thread t(&InputHandler::listen, this);
+		t.detach();
 	}
 }
 
@@ -32,7 +33,7 @@ void InputHandler::listen()
 
 		if(parse(input, tmp))
 		{
-			std::lock_guard<std::mutex> guard(lock);
+			std::lock_guard<std::mutex> guard(m_lock);
 
 			m_flag = true;
 			m_buffer = tmp;
@@ -43,11 +44,25 @@ void InputHandler::listen()
 bool InputHandler::parse(std::string str, ControlEntity& cvector)
 {
 	bool success = false;
+	double x;
+	double y;
+	int time;
 
 	// TODO Parsing
+	x = 1;
+	y = 1;
+	time = 0;
+
+	if(!str.empty())
+	{
+		success = true;
+	}
+	//
 
 	if(success)
 	{
+		cvector.update(x, y, time);
+
 		return true;
 	}
 

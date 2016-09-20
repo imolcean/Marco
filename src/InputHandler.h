@@ -26,6 +26,21 @@ private:
 
 	bool m_running;
 
+	/**
+	 * Listens for the input from the given stream.
+	 */
+	void listen();
+
+	/**
+	 * Parses the input.
+	 *
+	 * @param str input string
+	 * @param cvector control entity which stores the values parsed from the input string
+	 * @return true if input string is valid and has been parsed,
+	 * false otherwise
+	 */
+	bool parse(std::string str, ControlEntity& cvector);
+
 public:
 	/**
 	 * Main constructor.
@@ -44,21 +59,6 @@ public:
 	 * the further calls will be ignored.
 	 */
 	void run();
-
-	/**
-	 * Listens for the input from the given stream.
-	 */
-	void listen();
-
-	/**
-	 * Parses the input.
-	 *
-	 * @param str input string
-	 * @param cvector control entity which stores the values parsed from the input string
-	 * @return true if input string is valid and has been parsed,
-	 * false otherwise
-	 */
-	bool parse(std::string str, ControlEntity& cvector);
 };
 
 } /* namespace marco */
