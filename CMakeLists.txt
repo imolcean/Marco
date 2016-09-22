@@ -43,12 +43,12 @@ SET(LIBMARCO_SRC
 	src/Track.cpp
 	src/ControlEntity.cpp
 	src/InputHandler.cpp)
-ADD_LIBRARY(libmarco STATIC ${LIBMARCO_SRC})
-TARGET_LINK_LIBRARIES(libmarco ${CONFIG++_LIBRARIES})
+ADD_LIBRARY(marco_l STATIC ${LIBMARCO_SRC})
 
 
 # Executables
 SET(MARCO_SRC
 	src/main.cpp)
 ADD_EXECUTABLE(marco ${MARCO_SRC})
-TARGET_LINK_LIBRARIES(marco libmarco)
+TARGET_LINK_LIBRARIES(marco marco_l)
+TARGET_LINK_LIBRARIES(marco ${CONFIG++_LIBRARY})

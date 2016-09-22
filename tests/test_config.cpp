@@ -1,5 +1,5 @@
 /*
- * test-config.cpp
+ * test_config.cpp
  *
  *  Created on: 16.09.2016
  *      Author: imolcean
