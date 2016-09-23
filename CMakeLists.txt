@@ -38,10 +38,11 @@ ADD_EXECUTABLE(test_io ${TESTIO_SRC})
 
 # Libraries
 SET(LIBMARCO_SRC
-	src/Config.cpp
 	src/Robot.cpp
 	src/Track.cpp
-	src/ControlEntity.cpp
+	src/ActionCommand.cpp
+	src/MoveCommand.cpp
+	src/StopCommand.cpp
 	src/InputHandler.cpp)
 ADD_LIBRARY(marco_l STATIC ${LIBMARCO_SRC})
 

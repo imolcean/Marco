@@ -6,11 +6,13 @@
  */
 
 #include "InputHandler.h"
+#include <boost/algorithm/string.hpp>
+#include <iostream>
 
 namespace marco {
 
-InputHandler::InputHandler(ControlEntity& buffer, bool& flag, std::mutex& lock, std::istream& stream) :
-		m_buffer(buffer), m_flag(flag), m_lock(lock), m_stream(stream), m_running(false) {}
+InputHandler::InputHandler(Robot& robot, std::istream& stream) :
+		m_stream(stream), m_running(false), m_move(new MoveCommand(robot)), m_stop(new StopCommand(robot)), m_action(new ActionCommand(robot)) {}
 
 void InputHandler::run()
 {
@@ -19,54 +21,71 @@ void InputHandler::run()
 		m_running = true;
 		std::thread t(&InputHandler::listen, this);
 		t.detach();
+
+		// TODO Thread control, not just detach
 	}
 }
 
 void InputHandler::listen()
 {
 	std::string input;
-	ControlEntity tmp;
 
 	while(true)
 	{
 		std::getline(m_stream, input);
 
-		if(parse(input, tmp))
-		{
-			std::lock_guard<std::mutex> guard(m_lock);
+		std::vector<std::string> tokens = parse(input);
 
-			m_flag = true;
-			m_buffer = tmp;
-		}
+		handle(tokens);
 	}
 }
 
-bool InputHandler::parse(std::string str, ControlEntity& cvector)
+std::vector<std::string> InputHandler::parse(std::string str)
 {
-	bool success = false;
-	double x;
-	double y;
-	int time;
+	std::vector<std::string> tokens;
 
-	// TODO Parsing
-	x = 1;
-	y = 1;
-	time = 0;
+	boost::to_lower(str);
+	boost::trim(str);
+	boost::split(tokens, str, boost::is_any_of(" "), boost::token_compress_on);
 
-	if(!str.empty())
+	return tokens;
+}
+
+void InputHandler::handle(std::vector<std::string> tokens)
+{
+	if(tokens.empty())
 	{
-		success = true;
-	}
-	//
-
-	if(success)
-	{
-		cvector.update(x, y, time);
-
-		return true;
+		return;
 	}
 
-	return false;
+	std::string cmd = *tokens.begin();
+
+	tokens.erase(tokens.begin());
+
+	if(cmd == "action")
+	{
+		m_action->execute(tokens);
+	}
+	else if(cmd == "move")
+	{
+		m_move->execute(tokens);
+	}
+	else if(cmd == "stop")
+	{
+		m_stop->execute(tokens);
+	}
+	else
+	{
+		// TODO Log
+		std::cout << "Invalid command" << std::endl;
+	}
+}
+
+InputHandler::~InputHandler()
+{
+	delete m_action;
+	delete m_move;
+	delete m_stop;
 }
 
 } /* namespace marco */

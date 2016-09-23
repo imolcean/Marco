@@ -6,6 +6,7 @@
  */
 
 #include "Robot.h"
+#include <iostream>
 
 namespace marco
 {
@@ -21,6 +22,17 @@ Track& Robot::getLeftTrack()
 Track& Robot::getRightTrack()
 {
 	return m_rightTrack;
+}
+
+void Robot::move(double x, double y, int time)
+{
+	// TODO LMY Algorithm
+	std::cout << "ROBOT MOVE: " << x << ", " << y << ", " << time << std::endl;
+}
+
+void Robot::stop()
+{
+	move(0, 0);
 }
 
 } /* namespace marco */

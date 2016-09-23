@@ -23,6 +23,8 @@ public:
 	Robot(Track& leftTrack, Track& rightTrack);
 	Track& getLeftTrack();
 	Track& getRightTrack();
+	void move(double x, double y, int time = 0);
+	void stop();
 };
 
 } /* namespace marco */

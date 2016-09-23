@@ -10,8 +10,11 @@
 
 #include <iostream>
 #include <thread>
-#include <mutex>
-#include "ControlEntity.h"
+#include "Command.h"
+#include "ActionCommand.h"
+#include "MoveCommand.h"
+#include "StopCommand.h"
+#include "Robot.h"
 
 namespace marco
 {
@@ -19,12 +22,12 @@ namespace marco
 class InputHandler
 {
 private:
-	ControlEntity& m_buffer;
-	bool& m_flag;
-	std::mutex& m_lock;
 	std::istream& m_stream;
-
 	bool m_running;
+
+	Command* m_move;
+	Command* m_stop;
+	Command* m_action;
 
 	/**
 	 * Listens for the input from the given stream.
@@ -33,24 +36,19 @@ private:
 
 	/**
 	 * Parses the input.
-	 *
-	 * @param str input string
-	 * @param cvector control entity which stores the values parsed from the input string
-	 * @return true if input string is valid and has been parsed,
-	 * false otherwise
 	 */
-	bool parse(std::string str, ControlEntity& cvector);
+	std::vector<std::string> parse(std::string str);
+
+	/**
+	 * Handles the input.
+	 */
+	void handle(std::vector<std::string> tokens);
 
 public:
 	/**
 	 * Main constructor.
-	 *
-	 * @param buffer buffer control entity where the received commands are stored
-	 * @param flag is set when a new command has been received
-	 * @param lock mutex to synchronize access to the buffer
-	 * @param src input stream the handler will listen to
 	 */
-	InputHandler(ControlEntity& buffer, bool& flag, std::mutex& lock, std::istream& src = std::cin);
+	InputHandler(Robot& robot, std::istream& src = std::cin);
 
 	/**
 	 * Starts the input handler in a separate thread.
@@ -59,6 +57,11 @@ public:
 	 * the further calls will be ignored.
 	 */
 	void run();
+
+	/**
+	 * Destructor.
+	 */
+	~InputHandler();
 };
 
 } /* namespace marco */
