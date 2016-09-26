@@ -8,6 +8,8 @@
 #include "MoveCommand.h"
 #include <iostream>
 
+#include "easylogging++.h"
+
 namespace marco
 {
 
@@ -21,8 +23,7 @@ void MoveCommand::execute(std::vector<std::string> args)
 
 	if(args.size() < 2)
 	{
-		// TODO Log
-		std::cout << "Not enough arguments" << std::endl;
+		LOG(ERROR) << "MoveCommand: Not enough arguments. Command will be ignored." << std::endl;
 
 		return;
 	}
@@ -40,7 +41,7 @@ void MoveCommand::execute(std::vector<std::string> args)
 	catch(std::invalid_argument& e)
 	{
 		// TODO Log
-		std::cout << "Invalid argument: " << e.what() << std::endl;
+		LOG(ERROR) << "MoveCommand: Invalid argument. " << e.what() << std::endl;
 
 		return;
 	}

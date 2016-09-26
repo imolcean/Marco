@@ -13,7 +13,13 @@
 #include "Robot.h"
 #include "InputHandler.h"
 
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
 using namespace marco;
+
+static const std::string LOG_CONFIG_PATH = "../config/log.conf";
 
 Track* leftTrack;
 Track* rightTrack;
@@ -36,6 +42,11 @@ void deinit(int signum)
 
 int init(int argc, char** argv)
 {
+	// CONFIGURING THE LOGGER
+
+	el::Configurations conf(LOG_CONFIG_PATH);
+	el::Loggers::reconfigureLogger("default", conf);
+
 	// READING THE CONFIG
 
 	int leftPinA;
@@ -54,8 +65,8 @@ int init(int argc, char** argv)
 	}
 	else
 	{
-		// TODO Log
-		std::cout << "No configuration file provided" << std::endl;
+		LOG(ERROR) << "No configuration file provided" << std::endl;
+
 		return -1;
 	}
 
@@ -65,15 +76,13 @@ int init(int argc, char** argv)
 	}
 	catch(const libconfig::FileIOException& e)
 	 {
-		// TODO Log
-		std::cout << "I/O error while reading file." << std::endl;
+		LOG(ERROR) << "I/O error while reading file." << std::endl;
 
 		return -1;
 	}
 	catch(libconfig::ParseException& e)
 	{
-		// TODO Log
-		std::cout << "Error: " << e.getError() << " in " << e.getFile() << ":" << e.getLine() << std::endl;
+		LOG(ERROR) << "Error: " << e.getError() << " in " << e.getFile() << ":" << e.getLine() << std::endl;
 
 		return -1;
 	}
@@ -91,8 +100,7 @@ int init(int argc, char** argv)
 	}
 	catch(libconfig::SettingNotFoundException& e)
 	{
-		// TODO Log
-		std::cout << "Error at reading a setting" << std::endl;
+		LOG(ERROR) << "Error at reading a setting" << std::endl;
 
 		return -1;
 	}
@@ -118,6 +126,8 @@ int init(int argc, char** argv)
 
 int loop()
 {
+	// TODO
+
 //	std::cout << "Tick" << std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 

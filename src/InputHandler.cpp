@@ -9,6 +9,8 @@
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 
+#include "easylogging++.h"
+
 namespace marco {
 
 InputHandler::InputHandler(Robot& robot, std::istream& stream) :
@@ -76,8 +78,7 @@ void InputHandler::handle(std::vector<std::string> tokens)
 	}
 	else
 	{
-		// TODO Log
-		std::cout << "Invalid command" << std::endl;
+		LOG(WARNING) << "Invalid command: " << cmd << std::endl;
 	}
 }
 

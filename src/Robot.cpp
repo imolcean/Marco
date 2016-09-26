@@ -9,6 +9,8 @@
 #include <iostream>
 #include <math.h>
 
+#include "easylogging++.h"
+
 namespace marco
 {
 
@@ -106,7 +108,7 @@ void Robot::move(double x, double y, int time)
 	m_leftTrack.setVelocity(vLeft);
 	m_rightTrack.setVelocity(vRight);
 
-	std::cout << "ROBOT MOVE: " << vLeft << ", " << vRight << ", " << time << std::endl;
+	LOG(DEBUG) << "Control vector: " << x << ", " << y << ", " << time << ". Calculated values: " << vLeft << ", " << vRight << ", " << time << std::endl;
 }
 
 void Robot::stop()
