@@ -20,7 +20,10 @@ SET(Marco_VERSION_MINOR 1)
 
 # External libraries
 FIND_PACKAGE(Config++ REQUIRED)
+FIND_PACKAGE(Boost COMPONENTS system REQUIRED)
+
 INCLUDE_DIRECTORIES(${CONFIG++_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 
 # Tests
@@ -36,6 +39,11 @@ ADD_EXECUTABLE(test_cvector ${TESTCVECTOR_SRC})
 SET(TESTIO_SRC
 	tests/test_io.cpp)
 ADD_EXECUTABLE(test_io ${TESTIO_SRC})
+
+SET(TESTTIMER_SRC
+	tests/test_timer.cpp)
+ADD_EXECUTABLE(test_timer ${TESTTIMER_SRC})
+TARGET_LINK_LIBRARIES(test_timer ${Boost_LIBRARIES})
 
 
 # Libraries
