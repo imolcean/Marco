@@ -12,6 +12,7 @@
 
 #include "Robot.h"
 #include "InputHandler.h"
+#include "Timer.h"
 
 #include "easylogging++.h"
 
@@ -28,6 +29,13 @@ Robot* robot;
 InputHandler* console;
 
 libconfig::Config config;
+boost::asio::io_service io;
+
+void io_thread()
+{
+	boost::asio::io_service::work work(io);
+	io.run();
+}
 
 void deinit(int signum)
 {
@@ -109,7 +117,13 @@ int init(int argc, char** argv)
 
 	leftTrack = new Track(leftPinA, leftPinB, leftPinE);
 	rightTrack = new Track(rightPinA, rightPinB, rightPinE);
-	robot = new Robot(*leftTrack, *rightTrack);
+	robot = new Robot(*leftTrack, *rightTrack, io);
+
+	// STARTING THE IO THREAD
+
+	std::thread th(&io_thread);
+	th.detach();
+	// TODO Thread control, not just detach
 
 	// STARTING THE INPUT HANDLERS
 

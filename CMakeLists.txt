@@ -53,7 +53,8 @@ SET(LIBMARCO_SRC
 	src/ActionCommand.cpp
 	src/MoveCommand.cpp
 	src/StopCommand.cpp
-	src/InputHandler.cpp)
+	src/InputHandler.cpp
+	src/Timer.cpp)
 ADD_LIBRARY(marco_l STATIC ${LIBMARCO_SRC})
 
 
@@ -63,3 +64,4 @@ SET(MARCO_SRC
 ADD_EXECUTABLE(marco ${MARCO_SRC})
 TARGET_LINK_LIBRARIES(marco marco_l)
 TARGET_LINK_LIBRARIES(marco ${CONFIG++_LIBRARY})
+TARGET_LINK_LIBRARIES(marco ${Boost_LIBRARIES})

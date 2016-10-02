@@ -14,8 +14,8 @@
 namespace marco
 {
 
-Robot::Robot(Track& leftTrack, Track& rightTrack) :
-		m_leftTrack(leftTrack), m_rightTrack(rightTrack) {}
+Robot::Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io) :
+		m_leftTrack(leftTrack), m_rightTrack(rightTrack), m_timer(io, boost::bind(&Robot::timeout, this, boost::asio::placeholders::error)) {}
 
 Track& Robot::getLeftTrack()
 {
@@ -29,8 +29,6 @@ Track& Robot::getRightTrack()
 
 void Robot::move(double x, double y, int time)
 {
-	// TODO Timer
-
 	// Velocity of the tracks
 	double vLeft;
 	double vRight;
@@ -108,12 +106,29 @@ void Robot::move(double x, double y, int time)
 	m_leftTrack.setVelocity(vLeft);
 	m_rightTrack.setVelocity(vRight);
 
+	if(time > 0 && (x != 0 || y != 0))
+	{
+		m_timer.start(boost::posix_time::milliseconds(time));
+	}
+	else
+	{
+		m_timer.stop();
+	}
+
 	LOG(DEBUG) << "Control vector: " << x << ", " << y << ", " << time << ". Calculated values: " << vLeft << ", " << vRight << ", " << time << std::endl;
 }
 
 void Robot::stop()
 {
 	move(0, 0);
+}
+
+void Robot::timeout(const boost::system::error_code& e)
+{
+	if(e != boost::asio::error::operation_aborted)
+	{
+		stop();
+	}
 }
 
 } /* namespace marco */
