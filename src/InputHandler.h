@@ -14,6 +14,7 @@
 #include "ActionCommand.h"
 #include "MoveCommand.h"
 #include "StopCommand.h"
+#include "SpeedCommand.h"
 #include "Robot.h"
 
 namespace marco
@@ -28,6 +29,7 @@ private:
 	Command* m_move;
 	Command* m_stop;
 	Command* m_action;
+	Command* m_speed;
 
 	/**
 	 * Listens for the input from the given stream.

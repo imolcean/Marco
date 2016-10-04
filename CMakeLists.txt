@@ -53,6 +53,7 @@ SET(LIBMARCO_SRC
 	src/ActionCommand.cpp
 	src/MoveCommand.cpp
 	src/StopCommand.cpp
+	src/SpeedCommand.cpp
 	src/InputHandler.cpp
 	src/Timer.cpp)
 ADD_LIBRARY(marco_l STATIC ${LIBMARCO_SRC})

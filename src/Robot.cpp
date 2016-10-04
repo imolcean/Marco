@@ -15,7 +15,10 @@ namespace marco
 {
 
 Robot::Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io) :
-		m_leftTrack(leftTrack), m_rightTrack(rightTrack), m_timer(io, boost::bind(&Robot::timeout, this, boost::asio::placeholders::error)) {}
+		m_leftTrack(leftTrack),
+		m_rightTrack(rightTrack),
+		m_timer(io, boost::bind(&Robot::timeout, this, boost::asio::placeholders::error)),
+		m_speed(1) {}
 
 Track& Robot::getLeftTrack()
 {
@@ -103,6 +106,10 @@ void Robot::move(double x, double y, int time)
 		}
 	}
 
+	// Multiplying the speed with the speed coefficient of the robot
+	vLeft = vLeft * m_speed;
+	vRight = vRight * m_speed;
+
 	m_leftTrack.setVelocity(vLeft);
 	m_rightTrack.setVelocity(vRight);
 
@@ -129,6 +136,29 @@ void Robot::timeout(const boost::system::error_code& e)
 	{
 		stop();
 	}
+}
+
+void Robot::setSpeed(double val)
+{
+	if(val > 1)
+	{
+		m_speed = 1;
+	}
+	else if(val < 0)
+	{
+		m_speed = 0;
+	}
+	else
+	{
+		m_speed = val;
+	}
+
+	LOG(DEBUG) << "Speed set to " << m_speed << std::endl;
+}
+
+void Robot::changeSpeed(double val)
+{
+	setSpeed(m_speed + val);
 }
 
 } /* namespace marco */

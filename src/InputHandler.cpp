@@ -14,7 +14,12 @@
 namespace marco {
 
 InputHandler::InputHandler(Robot& robot, std::istream& stream) :
-		m_stream(stream), m_running(false), m_move(new MoveCommand(robot)), m_stop(new StopCommand(robot)), m_action(new ActionCommand(robot)) {}
+		m_stream(stream),
+		m_running(false),
+		m_move(new MoveCommand(robot)),
+		m_stop(new StopCommand(robot)),
+		m_action(new ActionCommand(robot)),
+		m_speed(new SpeedCommand(robot)) {}
 
 void InputHandler::run()
 {
@@ -75,6 +80,10 @@ void InputHandler::handle(std::vector<std::string> tokens)
 	else if(cmd == "stop")
 	{
 		m_stop->execute(tokens);
+	}
+	else if(cmd == "speed")
+	{
+		m_speed->execute(tokens);
 	}
 	else
 	{

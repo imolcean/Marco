@@ -22,6 +22,12 @@ private:
 	Track& m_rightTrack;
 	Timer m_timer;
 
+	/**
+	 * Speed coefficient.
+	 * Speed of the tracks are being multiplied with this value;
+	 */
+	double m_speed;
+
 public:
 	Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io);
 	Track& getLeftTrack();
@@ -29,6 +35,8 @@ public:
 	void move(double x, double y, int time = 0);
 	void stop();
 	void timeout(const boost::system::error_code& e);
+	void setSpeed(double val);
+	void changeSpeed(double val);
 };
 
 } /* namespace marco */

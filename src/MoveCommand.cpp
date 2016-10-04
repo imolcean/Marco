@@ -17,16 +17,16 @@ MoveCommand::MoveCommand(Robot& robot) : m_robot(robot) {}
 
 void MoveCommand::execute(std::vector<std::string> args)
 {
-	double x = 0;
-	double y = 0;
-	int time = 0;
-
 	if(args.size() < 2)
 	{
 		LOG(ERROR) << "MoveCommand: Not enough arguments. Command will be ignored." << std::endl;
 
 		return;
 	}
+
+	double x = 0;
+	double y = 0;
+	int time = 0;
 
 	try
 	{
@@ -40,7 +40,6 @@ void MoveCommand::execute(std::vector<std::string> args)
 	}
 	catch(std::invalid_argument& e)
 	{
-		// TODO Log
 		LOG(ERROR) << "MoveCommand: Invalid argument. " << e.what() << std::endl;
 
 		return;
