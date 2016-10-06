@@ -45,6 +45,9 @@ void deinit(int signum)
 
 	delete console;
 
+	// TODO
+//	io.stop();
+
 	exit(signum);
 }
 
