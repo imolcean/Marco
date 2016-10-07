@@ -10,8 +10,6 @@
 
 //#include <functional>
 
-// TODO Собственный IO
-
 typedef websocketpp::server<websocketpp::config::asio> server;
 
 class utility_server
@@ -20,12 +18,12 @@ private:
     server m_endpoint;
 
 public:
-    utility_server()
+    utility_server(boost::asio::io_service& io)
 	{
         m_endpoint.set_error_channels(websocketpp::log::elevel::all);
         m_endpoint.set_access_channels(websocketpp::log::alevel::all ^ websocketpp::log::alevel::frame_payload);
 
-        m_endpoint.init_asio();
+        m_endpoint.init_asio(&io);
 
         m_endpoint.set_open_handler(std::bind(&utility_server::open_handler, this, std::placeholders::_1));
         m_endpoint.set_fail_handler(std::bind(&utility_server::fail_handler, this, std::placeholders::_1));
@@ -64,12 +62,21 @@ public:
     {
     	std::cout << "Received: " << msg->get_payload() << " | " << msg->get_opcode() << std::endl;
     }
-
-
 };
 
-int main() {
-    utility_server s;
+boost::asio::io_service io;
+
+void io_thread()
+{
+	boost::asio::io_service::work work(io);
+	io.run();
+}
+
+int main(int argc, char** argv)
+{
+    std::thread th(&io_thread);
+
+    utility_server s(io);
 
     s.run();
 

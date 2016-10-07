@@ -7,59 +7,32 @@
 
 #include "InputHandler.h"
 #include <boost/algorithm/string.hpp>
-#include <iostream>
 
 #include "easylogging++.h"
 
 namespace marco {
 
-InputHandler::InputHandler(Robot& robot, std::istream& stream) :
-		m_stream(stream),
-		m_running(false),
+InputHandler::InputHandler(Robot& robot) :
 		m_move(new MoveCommand(robot)),
 		m_stop(new StopCommand(robot)),
 		m_action(new ActionCommand(robot)),
 		m_speed(new SpeedCommand(robot)) {}
 
-void InputHandler::run()
-{
-	if(!m_running)
-	{
-		m_running = true;
-		std::thread t(&InputHandler::listen, this);
-		t.detach();
-
-		// TODO Thread control, not just detach
-	}
-}
-
-void InputHandler::listen()
-{
-	std::string input;
-
-	while(true)
-	{
-		std::getline(m_stream, input);
-
-		std::vector<std::string> tokens = parse(input);
-
-		handle(tokens);
-	}
-}
-
-std::vector<std::string> InputHandler::parse(std::string str)
+std::vector<std::string> InputHandler::parse(std::string input)
 {
 	std::vector<std::string> tokens;
 
-	boost::to_lower(str);
-	boost::trim(str);
-	boost::split(tokens, str, boost::is_any_of(" "), boost::token_compress_on);
+	boost::to_lower(input);
+	boost::trim(input);
+	boost::split(tokens, input, boost::is_any_of(" "), boost::token_compress_on);
 
 	return tokens;
 }
 
-void InputHandler::handle(std::vector<std::string> tokens)
+void InputHandler::handle(std::string input)
 {
+	std::vector<std::string> tokens = parse(input);
+
 	if(tokens.empty())
 	{
 		return;
@@ -96,6 +69,7 @@ InputHandler::~InputHandler()
 	delete m_action;
 	delete m_move;
 	delete m_stop;
+	delete m_speed;
 }
 
 } /* namespace marco */

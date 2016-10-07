@@ -5,6 +5,7 @@
  *      Author: imolcean
  */
 
+#include <thread>
 #include <chrono>
 #include <csignal>
 
@@ -12,6 +13,8 @@
 
 #include "Robot.h"
 #include "InputHandler.h"
+#include "StreamListener.h"
+#include "WSServer.h"
 #include "Timer.h"
 
 #include "easylogging++.h"
@@ -26,7 +29,9 @@ Track* leftTrack;
 Track* rightTrack;
 Robot* robot;
 
-InputHandler* console;
+InputHandler* handler;
+StreamListener* console;
+WSServer* web;
 
 libconfig::Config config;
 boost::asio::io_service io;
@@ -43,7 +48,7 @@ void deinit(int signum)
 	delete leftTrack;
 	delete rightTrack;
 
-	delete console;
+	delete handler;
 
 	// TODO
 //	io.stop();
@@ -58,15 +63,7 @@ int init(int argc, char** argv)
 	el::Configurations conf(LOG_CONFIG_PATH);
 	el::Loggers::reconfigureLogger("default", conf);
 
-	// READING THE CONFIG
-
-	int leftPinA;
-	int leftPinB;
-	int leftPinE;
-
-	int rightPinA;
-	int rightPinB;
-	int rightPinE;
+	// READING THE CONFIG FILE
 
 	std::string filename;
 
@@ -98,6 +95,18 @@ int init(int argc, char** argv)
 		return -1;
 	}
 
+	// READING THE CONFIG PARAMETERS
+
+	int leftPinA;
+	int leftPinB;
+	int leftPinE;
+
+	int rightPinA;
+	int rightPinB;
+	int rightPinE;
+
+	int port;
+	bool web_logs;
 
 	try
 	{
@@ -108,6 +117,9 @@ int init(int argc, char** argv)
 		rightPinA = config.lookup("robot.tracks.right.pinA");
 		rightPinB = config.lookup("robot.tracks.right.pinB");
 		rightPinE = config.lookup("robot.tracks.right.pinE");
+
+		port = config.lookup("robot.web.port");
+		web_logs = config.lookup("robot.web.logs");
 	}
 	catch(libconfig::SettingNotFoundException& e)
 	{
@@ -116,22 +128,31 @@ int init(int argc, char** argv)
 		return -1;
 	}
 
+	// STARTING THE IO THREAD
+
+	std::thread th_io(&io_thread);
+	th_io.detach();
+	// TODO Thread control, not just detach
+
 	// OBJECT INITIALISATION
 
 	leftTrack = new Track(leftPinA, leftPinB, leftPinE);
 	rightTrack = new Track(rightPinA, rightPinB, rightPinE);
 	robot = new Robot(*leftTrack, *rightTrack, io);
 
-	// STARTING THE IO THREAD
+	handler = new InputHandler(*robot);
+	console = new StreamListener(std::cin, std::bind(&InputHandler::handle, handler, std::placeholders::_1));
+	web = new WSServer(io, std::bind(&InputHandler::handle, handler, std::placeholders::_1), port, web_logs);
 
-	std::thread th(&io_thread);
-	th.detach();
+	// STARTING THE INPUT THREADS
+
+	std::thread th_console(&StreamListener::run, console);
+	th_console.detach();
 	// TODO Thread control, not just detach
 
-	// STARTING THE INPUT HANDLERS
-
-	console = new InputHandler(*robot);
-	console->run();
+	std::thread th_web(&WSServer::run, web);
+	th_web.detach();
+	// TODO Thread control, not just detach
 
 	// REGISTER SIGNAL HANDLERS
 

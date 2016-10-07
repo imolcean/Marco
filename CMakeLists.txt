@@ -60,6 +60,8 @@ SET(LIBMARCO_SRC
 	src/StopCommand.cpp
 	src/SpeedCommand.cpp
 	src/InputHandler.cpp
+	src/StreamListener.cpp
+	src/WSServer.cpp
 	src/Timer.cpp)
 ADD_LIBRARY(marco_l STATIC ${LIBMARCO_SRC})
 

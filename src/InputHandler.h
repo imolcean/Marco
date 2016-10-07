@@ -8,8 +8,6 @@
 #ifndef SRC_INPUTHANDLER_H_
 #define SRC_INPUTHANDLER_H_
 
-#include <iostream>
-#include <thread>
 #include "Command.h"
 #include "ActionCommand.h"
 #include "MoveCommand.h"
@@ -23,42 +21,26 @@ namespace marco
 class InputHandler
 {
 private:
-	std::istream& m_stream;
-	bool m_running;
-
 	Command* m_move;
 	Command* m_stop;
 	Command* m_action;
 	Command* m_speed;
 
 	/**
-	 * Listens for the input from the given stream.
-	 */
-	void listen();
-
-	/**
 	 * Parses the input.
 	 */
-	std::vector<std::string> parse(std::string str);
-
-	/**
-	 * Handles the input.
-	 */
-	void handle(std::vector<std::string> tokens);
+	std::vector<std::string> parse(std::string input);
 
 public:
 	/**
 	 * Main constructor.
 	 */
-	InputHandler(Robot& robot, std::istream& src = std::cin);
+	InputHandler(Robot& robot);
 
 	/**
-	 * Starts the input handler in a separate thread.
-	 *
-	 * Can only be called once. If the handler is already started
-	 * the further calls will be ignored.
+	 * Handles the input.
 	 */
-	void run();
+	void handle(std::string input);
 
 	/**
 	 * Destructor.
