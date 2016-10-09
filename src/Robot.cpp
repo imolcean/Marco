@@ -110,8 +110,8 @@ void Robot::move(double x, double y, int time)
 	vLeft = vLeft * m_speed;
 	vRight = vRight * m_speed;
 
-	m_leftTrack.setVelocity(vLeft);
-	m_rightTrack.setVelocity(vRight);
+	m_leftTrack.move(vLeft);
+	m_rightTrack.move(vRight);
 
 	if(time > 0 && (x != 0 || y != 0))
 	{

@@ -6,54 +6,89 @@
  */
 
 #include "Track.h"
+//#include <bcm2835.h>
+
+#include "easylogging++.h"
 
 namespace marco {
 
-Track::Track(int pinA, int pinB, int pinE) : m_velocity(0), m_direction(true)
+Track::Track(unsigned int pinA, unsigned int pinB, unsigned int pinE) :
+		m_pinA(pinA),
+		m_pinB(pinB),
+		m_pinE(pinE),
+		m_pwm("/dev/pi-blaster")
 {
-	pins[0] = pinA;
-	pins[1] = pinB;
-	pins[2] = pinE;
+//	bcm2835_gpio_fsel(m_pinA, BCM2835_GPIO_FSEL_OUTP);
+//	bcm2835_gpio_fsel(m_pinB, BCM2835_GPIO_FSEL_OUTP);
+//	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // TODO Pi-Blaster does it by itself?
+
+	move(0);
 }
 
-int Track::getPinA()
+void Track::setDirection(bool forward)
 {
-	return pins[0];
-}
+	// TODO Check the directions
 
-int Track::getPinB()
-{
-	return pins[1];
-}
-
-int Track::getPinE()
-{
-	return pins[2];
-}
-
-double Track::getVelocity()
-{
-	return m_velocity;
+//	if(forward)
+//	{
+//		bcm2835_gpio_set(m_pinA);
+//		bcm2835_gpio_clr(m_pinB);
+//	}
+//	else
+//	{
+//		bcm2835_gpio_set(m_pinB);
+//		bcm2835_gpio_clr(m_pinA);
+//	}
 }
 
 void Track::setVelocity(double value)
 {
-	m_velocity = value;
+	m_pwm << m_pinE << "=" << fabs(value) << std::endl;
 }
 
-bool Track::getDirection()
+void Track::move(double value)
 {
-	return m_direction;
+	// WRONG VALUE
+
+	if(fabs(value) > 1)
+	{
+		LOG(WARNING) << "Track: Incorrect value " << value << ". It will be set to one in [-1, 1]." << std::endl;
+
+		if(value < -1)
+		{
+			value = -1;
+		}
+		else if(value > 1)
+		{
+			value = 1;
+		}
+	}
+
+	// DIRECTION
+
+	if(value < 0)
+	{
+		setDirection(false);
+	}
+	else
+	{
+		setDirection(true);
+	}
+
+	// VELOCITY
+
+	setVelocity(fabs(value));
 }
 
-void Track::setDirection(bool value)
+void Track::stop()
 {
-	m_direction = value;
+	move(0);
 }
 
-void Track::act()
+Track::~Track()
 {
-	// TODO
+	move(0);
+	m_pwm.close();
 }
 
 } /* namespace marco */

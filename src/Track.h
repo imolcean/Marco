@@ -8,7 +8,7 @@
 #ifndef TRACK_H_
 #define TRACK_H_
 
-#include <array>
+#include <fstream>
 
 namespace marco
 {
@@ -16,24 +16,20 @@ namespace marco
 class Track
 {
 private:
-	std::array<int, 3> pins;
-	double m_velocity;
-	bool m_direction;
+	unsigned int m_pinA;
+	unsigned int m_pinB;
+	unsigned int m_pinE;
 
-public:
-	Track(int pinA, int pinB, int pinE);
+	std::ofstream m_pwm;
 
-	int getPinA();
-	int getPinB();
-	int getPinE();
-
-	double getVelocity();
+	void setDirection(bool forward);
 	void setVelocity(double value);
 
-	bool getDirection();
-	void setDirection(bool value);
-
-	void act();
+public:
+	Track(unsigned int pinA, unsigned int pinB, unsigned int pinE);
+	void move(double value);
+	void stop();
+	~Track();
 };
 
 } /* namespace marco */

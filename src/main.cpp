@@ -10,6 +10,7 @@
 #include <csignal>
 
 #include <libconfig.h++>
+//#include <bcm2835.h>
 
 #include "Robot.h"
 #include "InputHandler.h"
@@ -50,8 +51,12 @@ void deinit(int signum)
 
 	delete handler;
 
-	// TODO
-//	io.stop();
+	io.stop();
+
+//	if(!bcm2835_close())
+//	{
+//		LOG(ERROR) << "BCM2835 closing failure." << std::endl;
+//	}
 
 	exit(signum);
 }
@@ -95,17 +100,26 @@ int init(int argc, char** argv)
 		return -1;
 	}
 
+	// INIT THE BCM2835
+
+//	if(!bcm2835_init())
+//	{
+//		LOG(ERROR) << "BCM2835 init failure." << std::endl;
+//
+//		return -1;
+//	}
+
 	// READING THE CONFIG PARAMETERS
 
-	int leftPinA;
-	int leftPinB;
-	int leftPinE;
+	unsigned int leftPinA;
+	unsigned int leftPinB;
+	unsigned int leftPinE;
 
-	int rightPinA;
-	int rightPinB;
-	int rightPinE;
+	unsigned int rightPinA;
+	unsigned int rightPinB;
+	unsigned int rightPinE;
 
-	int port;
+	unsigned int port;
 	bool web_logs;
 
 	try
