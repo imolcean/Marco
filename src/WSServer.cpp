@@ -35,7 +35,7 @@ WSServer::WSServer(boost::asio::io_service& io, func callback, unsigned int port
 
 void WSServer::run()
 {
-    m_endpoint.listen(m_port);
+    m_endpoint.listen(boost::asio::ip::tcp::v4(), m_port);
     m_endpoint.start_accept();
     m_endpoint.run();
 }
