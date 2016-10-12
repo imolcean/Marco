@@ -10,7 +10,7 @@
 #include <csignal>
 
 #include <libconfig.h++>
-//#include <bcm2835.h>
+#include <bcm2835.h>
 
 #include "Robot.h"
 #include "InputHandler.h"
@@ -53,10 +53,10 @@ void deinit(int signum)
 
 	io.stop();
 
-//	if(!bcm2835_close())
-//	{
-//		LOG(ERROR) << "BCM2835 closing failure." << std::endl;
-//	}
+	if(!bcm2835_close())
+	{
+		LOG(ERROR) << "BCM2835 closing failure." << std::endl;
+	}
 
 	exit(signum);
 }
@@ -102,12 +102,12 @@ int init(int argc, char** argv)
 
 	// INIT THE BCM2835
 
-//	if(!bcm2835_init())
-//	{
-//		LOG(ERROR) << "BCM2835 init failure." << std::endl;
-//
-//		return -1;
-//	}
+	if(!bcm2835_init())
+	{
+		LOG(ERROR) << "BCM2835 init failure." << std::endl;
+
+		return -1;
+	}
 
 	// READING THE CONFIG PARAMETERS
 

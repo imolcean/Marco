@@ -6,7 +6,7 @@
  */
 
 #include "Track.h"
-//#include <bcm2835.h>
+#include <bcm2835.h>
 
 #include "easylogging++.h"
 
@@ -18,27 +18,25 @@ Track::Track(unsigned int pinA, unsigned int pinB, unsigned int pinE) :
 		m_pinE(pinE),
 		m_pwm("/dev/pi-blaster")
 {
-//	bcm2835_gpio_fsel(m_pinA, BCM2835_GPIO_FSEL_OUTP);
-//	bcm2835_gpio_fsel(m_pinB, BCM2835_GPIO_FSEL_OUTP);
-//	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // TODO Pi-Blaster does it by itself?
+	bcm2835_gpio_fsel(m_pinA, BCM2835_GPIO_FSEL_OUTP);
+	bcm2835_gpio_fsel(m_pinB, BCM2835_GPIO_FSEL_OUTP);
+	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // TODO Pi-Blaster does it by itself?
 
 	move(0);
 }
 
 void Track::setDirection(bool forward)
 {
-	// TODO Check the directions
-
-//	if(forward)
-//	{
-//		bcm2835_gpio_set(m_pinA);
-//		bcm2835_gpio_clr(m_pinB);
-//	}
-//	else
-//	{
-//		bcm2835_gpio_set(m_pinB);
-//		bcm2835_gpio_clr(m_pinA);
-//	}
+	if(forward)
+	{
+		bcm2835_gpio_set(m_pinA);
+		bcm2835_gpio_clr(m_pinB);
+	}
+	else
+	{
+		bcm2835_gpio_set(m_pinB);
+		bcm2835_gpio_clr(m_pinA);
+	}
 }
 
 void Track::setVelocity(double value)
