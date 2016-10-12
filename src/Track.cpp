@@ -20,7 +20,7 @@ Track::Track(unsigned int pinA, unsigned int pinB, unsigned int pinE) :
 {
 	bcm2835_gpio_fsel(m_pinA, BCM2835_GPIO_FSEL_OUTP);
 	bcm2835_gpio_fsel(m_pinB, BCM2835_GPIO_FSEL_OUTP);
-	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // TODO Pi-Blaster does it by itself?
+//	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // TODO Pi-Blaster does it by itself?
 
 	move(0);
 }
@@ -42,6 +42,8 @@ void Track::setDirection(bool forward)
 void Track::setVelocity(double value)
 {
 	m_pwm << m_pinE << "=" << fabs(value) << std::endl;
+
+	LOG(DEBUG) << "Track writes to " << m_pwm << ": " << m_pinE << "=" << fabs(value) << std::endl;
 }
 
 void Track::move(double value)
