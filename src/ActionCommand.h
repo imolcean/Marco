@@ -14,14 +14,28 @@
 namespace marco
 {
 
+/**
+ * This command calls the given command of a robot module.
+ */
 class ActionCommand: public Command
 {
 private:
 	Robot& m_robot;
 
-
 public:
+
+	/**
+	 * Constructor.
+	 *
+	 * @param robot reference to the robot
+	 */
 	ActionCommand(Robot& robot);
+
+	/**
+	 * Executes the command.
+	 *
+	 * @param args parameters of the command
+	 */
 	virtual void execute(std::vector<std::string> args);
 };
 

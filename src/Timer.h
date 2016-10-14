@@ -15,6 +15,9 @@
 namespace marco
 {
 
+/**
+ * Provides interface for the asynchronous timer with callback.
+ */
 class Timer
 {
 	typedef boost::asio::io_service IOService;
@@ -27,9 +30,31 @@ private:
 	Func m_callback;
 
 public:
+
+	/**
+	 * Constructor.
+	 *
+	 * @param io io service
+	 * @param callback timeout callback function
+	 */
 	Timer(IOService& io, Func callback);
+
+	/**
+	 * Starts the timer or restarts it with the
+	 * new deadline if it was already running.
+	 *
+	 * @param interval deadline
+	 */
 	void start(Duration interval);
+
+	/**
+	 * Stops the timer.
+	 */
 	void stop();
+
+	/**
+	 * Destructor.
+	 */
 	~Timer();
 };
 

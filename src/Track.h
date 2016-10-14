@@ -13,6 +13,9 @@
 namespace marco
 {
 
+/**
+ * Provides interface to control a track of the robot.
+ */
 class Track
 {
 private:
@@ -22,13 +25,46 @@ private:
 
 	std::ofstream m_pwm;
 
+	/**
+	 * Sets the direction of the movement.
+	 *
+	 * @param forward whether the track has to move forward
+	 */
 	void setDirection(bool forward);
+
+	/**
+	 * Sets the speed of the track.
+	 *
+	 * @param value new speed of the track
+	 */
 	void setVelocity(double value);
 
 public:
+
+	/**
+	 * Constructor.
+	 *
+	 * @param pinA input A of the motor driver
+	 * @param pinB input B of the motor driver
+	 * @param pinE Enable input of the motor driver
+	 */
 	Track(unsigned int pinA, unsigned int pinB, unsigned int pinE);
+
+	/**
+	 * Moves the track.
+	 *
+	 * @param value speed of the track, if negative then will move backwards
+	 */
 	void move(double value);
+
+	/**
+	 * Stops the track if it was moving.
+	 */
 	void stop();
+
+	/**
+	 * Destructor.
+	 */
 	~Track();
 };
 

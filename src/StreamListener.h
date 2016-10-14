@@ -15,6 +15,10 @@ typedef std::function<void(std::string)> func;
 namespace marco
 {
 
+/**
+ * Listens to an input stream and calls a callback
+ * function when receives a line.
+ */
 class StreamListener
 {
 private:
@@ -22,8 +26,20 @@ private:
 	func m_callback;
 
 public:
+
+	/**
+	 * Constructor.
+	 *
+	 * @param stream input stream to listen to
+	 * @param callback callback function to call when the line is read
+	 */
 	StreamListener(std::istream& stream, func callback);
 
+	/**
+	 * Starts the listening.
+	 *
+	 * This method blocks, so call it in a separate thread.
+	 */
 	void run();
 };
 

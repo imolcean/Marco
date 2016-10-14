@@ -10,7 +10,8 @@
 
 #include "easylogging++.h"
 
-namespace marco {
+namespace marco
+{
 
 InputHandler::InputHandler(Robot& robot) :
 		m_move(new MoveCommand(robot)),

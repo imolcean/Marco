@@ -18,6 +18,9 @@
 namespace marco
 {
 
+/**
+ * Parses and handles the input command.
+ */
 class InputHandler
 {
 private:
@@ -27,18 +30,24 @@ private:
 	Command* m_speed;
 
 	/**
-	 * Parses the input.
+	 * Parses the input into a vector of tokens.
+	 *
+	 * @param input input string
 	 */
 	std::vector<std::string> parse(std::string input);
 
 public:
 	/**
 	 * Main constructor.
+	 *
+	 * @param robot reference to the robot.
 	 */
 	InputHandler(Robot& robot);
 
 	/**
 	 * Handles the input.
+	 *
+	 * @param input input string
 	 */
 	void handle(std::string input);
 

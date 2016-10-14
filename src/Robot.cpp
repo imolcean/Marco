@@ -64,8 +64,6 @@ void Robot::move(double x, double y, int time)
 	// When x is zero and y is not
 	// robot will turn around it's center
 	// and not around the track
-	//
-	// TODO Make configurable
 	{
 		if(x == 0)
 		{
@@ -94,8 +92,6 @@ void Robot::move(double x, double y, int time)
 	// If values are bigger than 1.0
 	// they will be scaled so the
 	// biggest one will be 1.0
-	//
-	// TODO Make configurable
 	{
 		double t = std::max(fabs(vLeft), fabs(vRight));
 

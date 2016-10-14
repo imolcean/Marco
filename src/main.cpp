@@ -37,12 +37,20 @@ WSServer* web;
 libconfig::Config config;
 boost::asio::io_service io;
 
+/**
+ * Starts the io service.
+ *
+ * This function blocks, so call it in a separate thread.
+ */
 void io_thread()
 {
 	boost::asio::io_service::work work(io);
 	io.run();
 }
 
+/**
+ * Finalizes the program.
+ */
 void deinit(int signum)
 {
 	delete robot;
@@ -61,6 +69,9 @@ void deinit(int signum)
 	exit(signum);
 }
 
+/**
+ * Initializes the program.
+ */
 int init(int argc, char** argv)
 {
 	// CONFIGURING THE LOGGER
@@ -176,12 +187,13 @@ int init(int argc, char** argv)
 	return 0;
 }
 
+/**
+ * Main loop.
+ */
 int loop()
 {
-	// TODO
-
 //	std::cout << "Tick" << std::endl;
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+//	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 	return 0;
 }

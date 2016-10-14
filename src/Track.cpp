@@ -20,7 +20,7 @@ Track::Track(unsigned int pinA, unsigned int pinB, unsigned int pinE) :
 {
 	bcm2835_gpio_fsel(m_pinA, BCM2835_GPIO_FSEL_OUTP);
 	bcm2835_gpio_fsel(m_pinB, BCM2835_GPIO_FSEL_OUTP);
-//	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // TODO Pi-Blaster does it by itself?
+//	bcm2835_gpio_fsel(m_pinE, BCM2835_GPIO_FSEL_OUTP); // Pi-Blaster does it by itself
 
 	move(0);
 }
@@ -52,7 +52,7 @@ void Track::move(double value)
 
 	if(fabs(value) > 1)
 	{
-		LOG(WARNING) << "Track: Incorrect value " << value << ". It will be set to one in [-1, 1]." << std::endl;
+		LOG(ERROR) << "Track: Incorrect value " << value << ". It will be set to one in [-1, 1]." << std::endl;
 
 		if(value < -1)
 		{

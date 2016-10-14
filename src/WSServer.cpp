@@ -57,7 +57,7 @@ void WSServer::close_handler(websocketpp::connection_hdl hdl)
 
 void WSServer::message_handler(websocketpp::connection_hdl hdl, Server::message_ptr msg)
 {
-	LOG(INFO) << "Received: " << msg->get_payload() << " | " << msg->get_opcode() << std::endl;
+	LOG(DEBUG) << "Received: " << msg->get_payload() << " | " << msg->get_opcode() << std::endl;
 
 	m_callback(msg->get_payload());
 }
