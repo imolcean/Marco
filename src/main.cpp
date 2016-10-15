@@ -130,6 +130,9 @@ int init(int argc, char** argv)
 	unsigned int rightPinB;
 	unsigned int rightPinE;
 
+	double minSpeed;
+	double maxSpeed;
+
 	unsigned int port;
 	bool web_logs;
 
@@ -142,6 +145,16 @@ int init(int argc, char** argv)
 		rightPinA = config.lookup("robot.tracks.right.pinA");
 		rightPinB = config.lookup("robot.tracks.right.pinB");
 		rightPinE = config.lookup("robot.tracks.right.pinE");
+
+		minSpeed = config.lookup("robot.speed.min");
+		maxSpeed = config.lookup("robot.speed.max");
+
+		if(minSpeed < 0 || maxSpeed > 1)
+		{
+			LOG(ERROR) << "Invalid speed value" << std::endl;
+
+			return -1;
+		}
 
 		port = config.lookup("robot.web.port");
 		web_logs = config.lookup("robot.web.logs");
@@ -163,7 +176,7 @@ int init(int argc, char** argv)
 
 	leftTrack = new Track(leftPinA, leftPinB, leftPinE);
 	rightTrack = new Track(rightPinA, rightPinB, rightPinE);
-	robot = new Robot(*leftTrack, *rightTrack, io);
+	robot = new Robot(*leftTrack, *rightTrack, io, minSpeed, maxSpeed);
 
 	handler = new InputHandler(*robot);
 	console = new StreamListener(std::cin, std::bind(&InputHandler::handle, handler, std::placeholders::_1));

@@ -25,13 +25,14 @@ private:
 	Track& m_rightTrack;
 	Timer m_timer;
 
-	/**
-	 * Speed coefficient.
-	 * Speed of the tracks are being multiplied with this value;
-	 */
+	double m_minSpeed;
+	double m_maxSpeed;
 	double m_speed;
 
 public:
+
+	// TODO May be let the robot read the config file
+	//		to reduce the amount of arguments in the constructor
 
 	/**
 	 * Constructor.
@@ -40,7 +41,7 @@ public:
 	 * @param rightTrack right track of the robot
 	 * @param io io service for the timer
 	 */
-	Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io);
+	Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io, double minSpeed = 0, double maxSpeed = 1);
 
 	/**
 	 * Getter for the left track.
@@ -51,6 +52,16 @@ public:
 	 * Getter for the right track.
 	 */
 	Track& getRightTrack();
+
+	/**
+	 * Getter for the min speed.
+	 */
+	double getMinSpeed();
+
+	/**
+	 * Getter for the max speed.
+	 */
+	double getMaxSpeed();
 
 	/**
 	 * Moves the robot in the given direction

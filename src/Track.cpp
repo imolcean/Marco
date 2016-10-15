@@ -43,27 +43,11 @@ void Track::setVelocity(double value)
 {
 	m_pwm << m_pinE << "=" << fabs(value) << std::endl;
 
-	LOG(DEBUG) << "Track writes to " << m_pwm << ": " << m_pinE << "=" << fabs(value) << std::endl;
+	LOG(DEBUG) << "Track writes: " << m_pinE << "=" << fabs(value) << std::endl;
 }
 
 void Track::move(double value)
 {
-	// WRONG VALUE
-
-	if(fabs(value) > 1)
-	{
-		LOG(ERROR) << "Track: Incorrect value " << value << ". It will be set to one in [-1, 1]." << std::endl;
-
-		if(value < -1)
-		{
-			value = -1;
-		}
-		else if(value > 1)
-		{
-			value = 1;
-		}
-	}
-
 	// DIRECTION
 
 	if(value < 0)

@@ -14,11 +14,13 @@
 namespace marco
 {
 
-Robot::Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io) :
+Robot::Robot(Track& leftTrack, Track& rightTrack, boost::asio::io_service& io, double minSpeed, double maxSpeed) :
 		m_leftTrack(leftTrack),
 		m_rightTrack(rightTrack),
 		m_timer(io, boost::bind(&Robot::timeout, this, boost::asio::placeholders::error)),
-		m_speed(1) {}
+		m_minSpeed(minSpeed),
+		m_maxSpeed(maxSpeed),
+		m_speed(maxSpeed) {}
 
 Track& Robot::getLeftTrack()
 {
@@ -28,6 +30,16 @@ Track& Robot::getLeftTrack()
 Track& Robot::getRightTrack()
 {
 	return m_rightTrack;
+}
+
+double Robot::getMinSpeed()
+{
+	return m_minSpeed;
+}
+
+double Robot::getMaxSpeed()
+{
+	return m_maxSpeed;
 }
 
 void Robot::move(double x, double y, int time)
@@ -136,13 +148,13 @@ void Robot::timeout(const boost::system::error_code& e)
 
 void Robot::setSpeed(double val)
 {
-	if(val > 1)
+	if(val > m_maxSpeed)
 	{
-		m_speed = 1;
+		m_speed = m_maxSpeed;
 	}
-	else if(val < 0)
+	else if(val < m_minSpeed)
 	{
-		m_speed = 0;
+		m_speed = m_minSpeed;
 	}
 	else
 	{
